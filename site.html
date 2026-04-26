@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luigi Giovanetti — VFX Artist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Syne:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --accent: #c8a96e;
+      --accent-dim: #7a6440;
+      --text: #e8e2d9;
+      --muted: #5a5550;
+      --border: #1e1e1e;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── PASSWORD SCREEN ── */
+    #gate {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      z-index: 100;
+      background: var(--bg);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    #gate.fade-out {
+      opacity: 0;
+      transform: translateY(-12px);
+      pointer-events: none;
+    }
+
+    .gate-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .gate-name span {
+      color: var(--accent);
+    }
+
+    .gate-sub {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-top: -1.8rem;
+    }
+
+    .gate-divider {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--accent-dim), transparent);
+    }
+
+    .gate-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .gate-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .gate-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      text-align: center;
+      width: 100%;
+      padding: 0.5rem 0;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .gate-input:focus {
+      border-color: var(--accent-dim);
+    }
+
+    .gate-btn {
+      margin-top: 0.5rem;
+      background: transparent;
+      border: 1px solid var(--accent-dim);
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 0.75rem 2.5rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .gate-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    .gate-error {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8b3a3a;
+      min-height: 1em;
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+
+    .gate-error.visible { opacity: 1; }
+
+    /* ── PORTFOLIO ── */
+    #portfolio {
+      opacity: 0;
+      transition: opacity 1s ease 0.3s;
+      min-height: 100vh;
+    }
+
+    #portfolio.visible { opacity: 1; }
+
+    /* header */
+    header {
+      padding: 3.5rem 6vw 2rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+    }
+
+    .header-name span { color: var(--accent); }
+
+    .header-role {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* reel section */
+    .reel-section {
+      padding: 5vw 6vw;
+      position: relative;
+    }
+
+    .section-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      background: #000;
+      border: 1px solid var(--border);
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* about */
+    .about-section {
+      padding: 4vw 6vw 5vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .about-section { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+
+    .about-bio {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      font-weight: 300;
+      line-height: 1.8;
+      color: #b0a898;
+      font-style: italic;
+    }
+
+    .about-bio .placeholder-note {
+      font-family: 'Syne', sans-serif;
+      font-style: normal;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      border: 1px dashed #2a2a2a;
+      padding: 1rem 1.2rem;
+      display: block;
+    }
+
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+      justify-content: center;
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .contact-item-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .contact-item a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      transition: color 0.25s;
+    }
+
+    .contact-item a:hover { color: var(--accent); }
+
+    /* footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-note {
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer-accent {
+      width: 24px;
+      height: 1px;
+      background: var(--accent-dim);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PASSWORD GATE -->
+  <div id="gate">
+    <div>
+      <div class="gate-name">Luigi <span>Giovanetti</span></div>
+      <div class="gate-sub">VFX Artist</div>
+    </div>
+    <div class="gate-divider"></div>
+    <div class="gate-form">
+      <div class="gate-label">Enter password to continue</div>
+      <input
+        id="pw-input"
+        class="gate-input"
+        type="password"
+        placeholder="··········"
+        autocomplete="off"
+      />
+      <div id="pw-error" class="gate-error">Incorrect password</div>
+      <button class="gate-btn" onclick="checkPassword()">Enter</button>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO -->
+  <div id="portfolio">
+    <header>
+      <div class="header-name">Luigi <span>Giovanetti</span></div>
+      <div class="header-role">VFX Artist</div>
+    </header>
+
+    <section class="reel-section">
+      <div class="section-label">Showreel</div>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/BqJWEqsGFbA?rel=0&modestbranding=1&color=white"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div>
+        <div class="section-label">About</div>
+        <div class="about-bio">
+          <span class="placeholder-note">
+            → Replace this with your bio. 2–3 sentences work best — who you are, what you specialise in, your experience level or the kind of projects you work on.
+          </span>
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <div class="section-label">Contact</div>
+        <div class="contact-item">
+          <span class="contact-item-label">Email</span>
+          <a href="mailto:luigigiovanetti7@gmail.com">luigigiovanetti7@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">LinkedIn</span>
+          <a href="https://www.linkedin.com/in/luigigiovanetti7" target="_blank" rel="noopener">linkedin.com/in/luigigiovanetti7</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-note">© 2025 Luigi Giovanetti</div>
+      <div class="footer-accent"></div>
+    </footer>
+  </div>
+
+  <script>
+    // Enter on keypress
+    document.getElementById('pw-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    function checkPassword() {
+      const val = document.getElementById('pw-input').value;
+      const err = document.getElementById('pw-error');
+
+      if (val === 'Houdini2025') {
+        document.getElementById('gate').classList.add('fade-out');
+        setTimeout(() => {
+          document.getElementById('gate').style.display = 'none';
+          document.getElementById('portfolio').classList.add('visible');
+        }, 800);
+      } else {
+        err.classList.add('visible');
+        document.getElementById('pw-input').value = '';
+        setTimeout(() => err.classList.remove('visible'), 2000);
+      }
+    }
+  </script>
+
+</body>
+</html>
