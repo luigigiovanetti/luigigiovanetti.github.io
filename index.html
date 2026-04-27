@@ -208,6 +208,9 @@
       padding-bottom: 56.25%;
       background: #000;
       border: 1px solid var(--border);
+      overflow: hidden;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     .video-wrapper iframe {
@@ -216,6 +219,7 @@
       width: 100%;
       height: 100%;
       border: none;
+      -webkit-overflow-scrolling: touch;
     }
 
     /* about */
@@ -241,13 +245,10 @@
     }
 
     .about-bio .placeholder-note {
-      font-family: 'Syne', sans-serif;
-      font-style: normal;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      border: 1px dashed #2a2a2a;
-      padding: 1rem 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: inherit;
+      color: inherit;
       display: block;
     }
 
@@ -350,7 +351,7 @@
         <div class="section-label">About</div>
         <div class="about-bio">
           <span class="placeholder-note">
-            → Replace this with your bio. 2–3 sentences work best — who you are, what you specialise in, your experience level or the kind of projects you work on.
+            An Italian FX artist driven by a genuine passion for the craft. I believe great effects should feel invisible — seamlessly woven into the story, yet powerful enough to leave a lasting impression. My hope is that the work I put into every shot inspires others to pursue the creative path they love, just as others inspired me to pursue mine.
           </span>
         </div>
       </div>
@@ -364,6 +365,10 @@
         <div class="contact-item">
           <span class="contact-item-label">LinkedIn</span>
           <a href="https://www.linkedin.com/in/luigigiovanetti7" target="_blank" rel="noopener">linkedin.com/in/luigigiovanetti7</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">IMDb</span>
+          <a href="https://www.imdb.com/name/nm17975125/" target="_blank" rel="noopener">imdb.com/name/nm17975125</a>
         </div>
       </div>
     </section>
