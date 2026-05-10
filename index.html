@@ -211,19 +211,21 @@
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      transition: color 0.25s, letter-spacing 0.25s;
+      background: transparent;
       border: 1px solid var(--accent-dim);
-      padding: 0.6rem 1.2rem;
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 0.75rem 2.5rem;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
     }
 
     .breakdown-link:hover {
-      color: var(--bg);
       background: var(--accent);
+      color: var(--bg);
       border-color: var(--accent);
     }
 
