@@ -194,11 +194,17 @@
       position: relative;
     }
 
-    .reel-actions {
-      margin-top: 1.2rem;
+    .reel-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .reel-actions {
+      margin-top: 1.2rem;
+      display: flex;
+      justify-content: flex-end;
     }
 
     .breakdown-link {
@@ -416,7 +422,12 @@
     </header>
 
     <section class="reel-section">
-      <div class="section-label">Showreel</div>
+      <div class="reel-top">
+        <div class="section-label" style="margin-bottom:0;">Showreel</div>
+        <button class="copy-btn" onclick="copyReelLink()">
+          <span id="copy-label">Copy Reel Link</span>
+        </button>
+      </div>
       <div class="video-wrapper">
         <iframe
           src="https://drive.google.com/file/d/15Wshj1lpkQBLh-7AZ3jENdFcqkd1Y3ts/preview"
@@ -426,12 +437,9 @@
       </div>
       <div class="reel-actions">
         <a href="breakdown.html" class="breakdown-link">
-          <span class="breakdown-arrow">←</span>
+          <span class="breakdown-arrow">→</span>
           <span>Shots I'm Most Proud Of</span>
         </a>
-        <button class="copy-btn" onclick="copyReelLink()">
-          <span id="copy-label">Copy Reel Link</span>
-        </button>
       </div>
     </section>
 
