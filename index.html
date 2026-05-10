@@ -208,26 +208,20 @@
     }
 
     .breakdown-link {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--accent);
-      color: var(--text);
+      color: #e8e2d9;
       font-family: 'Syne', sans-serif;
-      font-size: 0.825rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      padding: 0.5rem 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
       text-decoration: none;
-      transition: color 0.3s, border-color 0.3s;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 0.3rem;
+      transition: color 0.3s;
     }
 
-    .breakdown-link:hover {
-      color: var(--accent);
-      border-color: var(--accent-dim);
-    }
+    .breakdown-link:hover { color: var(--accent); }
 
     .breakdown-arrow {
       display: inline-block;
