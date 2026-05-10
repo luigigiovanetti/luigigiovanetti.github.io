@@ -194,6 +194,67 @@
       position: relative;
     }
 
+    .reel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--accent-dim);
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      border-color: #4a7a4a;
+      color: #6aaa6a;
+    }
+
+    .breakdown-link-wrap {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .breakdown-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+
+    .breakdown-link:hover {
+      color: var(--accent);
+    }
+
+    .breakdown-arrow {
+      transition: transform 0.25s;
+    }
+
+    .breakdown-link:hover .breakdown-arrow {
+      transform: translateX(4px);
+    }
+
     .section-label {
       font-size: 0.55rem;
       letter-spacing: 0.4em;
@@ -201,8 +262,6 @@
       color: var(--accent-dim);
       margin-bottom: 1.5rem;
     }
-
-    .video-wrapper {
       position: relative;
       width: 100%;
       padding-bottom: 56.25%;
@@ -336,13 +395,24 @@
     </header>
 
     <section class="reel-section">
-      <div class="section-label">Showreel</div>
+      <div class="reel-header">
+        <div class="section-label" style="margin-bottom:0;">Showreel</div>
+        <button class="copy-btn" onclick="copyReelLink()">
+          <span id="copy-label">Copy Reel Link</span>
+        </button>
+      </div>
       <div class="video-wrapper">
         <iframe
           src="https://drive.google.com/file/d/15Wshj1lpkQBLh-7AZ3jENdFcqkd1Y3ts/preview"
           allow="autoplay"
           allowfullscreen
         ></iframe>
+      </div>
+      <div class="breakdown-link-wrap">
+        <a href="breakdown.html" class="breakdown-link">
+          <span>Shots I'm Most Proud Of</span>
+          <span class="breakdown-arrow">→</span>
+        </a>
       </div>
     </section>
 
@@ -380,7 +450,19 @@
   </div>
 
   <script>
-    // Enter on keypress
+    function copyReelLink() {
+      const link = 'https://drive.google.com/file/d/15Wshj1lpkQBLh-7AZ3jENdFcqkd1Y3ts/view?usp=sharing';
+      navigator.clipboard.writeText(link).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        const label = document.getElementById('copy-label');
+        btn.classList.add('copied');
+        label.textContent = 'Link Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          label.textContent = 'Copy Reel Link';
+        }, 2500);
+      });
+    }
     document.getElementById('pw-input').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') checkPassword();
     });
