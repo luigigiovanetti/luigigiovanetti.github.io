@@ -194,12 +194,33 @@
       position: relative;
     }
 
-    .reel-header {
+    .reel-actions {
+      margin-top: 1.2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.5rem;
     }
+
+    .breakdown-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+
+    .breakdown-link:hover { color: var(--accent); }
+
+    .breakdown-arrow {
+      display: inline-block;
+      transition: transform 0.25s;
+    }
+
+    .breakdown-link:hover .breakdown-arrow { transform: translateX(4px); }
 
     .copy-btn {
       background: transparent;
@@ -395,12 +416,7 @@
     </header>
 
     <section class="reel-section">
-      <div class="reel-header">
-        <div class="section-label" style="margin-bottom:0;">Showreel</div>
-        <button class="copy-btn" onclick="copyReelLink()">
-          <span id="copy-label">Copy Reel Link</span>
-        </button>
-      </div>
+      <div class="section-label">Showreel</div>
       <div class="video-wrapper">
         <iframe
           src="https://drive.google.com/file/d/15Wshj1lpkQBLh-7AZ3jENdFcqkd1Y3ts/preview"
@@ -408,11 +424,14 @@
           allowfullscreen
         ></iframe>
       </div>
-      <div class="breakdown-link-wrap">
+      <div class="reel-actions">
         <a href="breakdown.html" class="breakdown-link">
+          <span class="breakdown-arrow">←</span>
           <span>Shots I'm Most Proud Of</span>
-          <span class="breakdown-arrow">→</span>
         </a>
+        <button class="copy-btn" onclick="copyReelLink()">
+          <span id="copy-label">Copy Reel Link</span>
+        </button>
       </div>
     </section>
 
@@ -450,6 +469,12 @@
   </div>
 
   <script>
+    // Skip gate if coming back from breakdown page
+    if (document.referrer.includes('breakdown.html') || sessionStorage.getItem('unlocked')) {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('portfolio').classList.add('visible');
+    }
+
     function copyReelLink() {
       const link = 'https://drive.google.com/file/d/15Wshj1lpkQBLh-7AZ3jENdFcqkd1Y3ts/view?usp=sharing';
       navigator.clipboard.writeText(link).then(() => {
@@ -463,6 +488,7 @@
         }, 2500);
       });
     }
+
     document.getElementById('pw-input').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') checkPassword();
     });
@@ -472,6 +498,7 @@
       const err = document.getElementById('pw-error');
 
       if (val === 'Houdini2025') {
+        sessionStorage.setItem('unlocked', 'true');
         document.getElementById('gate').classList.add('fade-out');
         setTimeout(() => {
           document.getElementById('gate').style.display = 'none';
